@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="renderer" content="webkit">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>稻草贴吧</title>
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+  <script src="/bower_components/polyfill/dist/polyfill.min.js"></script>
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="bower_components/@popperjs/core/dist/umd/popper.min.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="bower_components/polyfill/dist/polyfill.min.js"></script>
+  <script src="bower_components/vue/dist/vue.js"></script>
+  <style type="text/css">
+    #userApp{
+      position: fixed;
+      top: 90px;
+      margin-left:200px;
+    }
+  </style>
+</head>
+<body>
+<header class="container-fluid mb-3 bg-light" id="userNewsApp">
+
+  <nav class="navbar navbar-expand-lg   navbar-light bg-light">
+
+
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-item nav-link active" href="index.html">首页</a>
+      </div>
+
+    </div>
+
+    <div class="form-inline my-2 my-lg-0">
+      <input class="form-control form-control-sm mr-sm-2 rounded-pill" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-sm btn-outline-secondary my-2 my-sm-0 rounded-pill" type="button"><i class="fa fa-search" aria-hidden="true"></i></button>
+    </div>
+    <a type="button" class="btn btn-outline-primary btn-sm mx-2" href="create.html">发布帖子</a>
+    <div id="noticeCount">
+      <button type="button" class="btn btn-default btn-xs fa fa-bell-o" data-toggle="modal" data-target="#noticeModal">
+        <span class="badge badge-warning badge-pill" v-text="total">3</span>
+      </button>
+    </div>
+    <div class="dropdown   py-1 mr-3 ">
+      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <img style="width: 30px;height: 30px;border-radius: 50%;" src="img/user.jpg"  v-bind:src="user.img">
+      </button>
+      <div class="dropdown-menu dropdown-menu-sm-left text-sm border-0" aria-labelledby="dropdownMenu2">
+        <a class="dropdown-item " href="user.html">个人资料</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item " href="/userInfo.html">修改资料</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item " href="/logout">注销登录</a>
+      </div>
+    </div>
+  </nav>
+  <!-- 消息modal-->
+  <div class="modal fade" id="noticeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+
+        <div class="modal-body">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+          <div id="myTab" role="tablist" class="nav nav-tabs">
+              <a href="#commentNotice" class="nav-item nav-link active text-black" data-toggle="tab" aria-controls="commentNotice" aria-selected="true">
+                通知
+              </a>
+              <a href="#announcement" class="nav-item nav-link text-black" data-toggle="tab" aria-controls="announcement" aria-selected="true">
+                公告
+              </a>
+
+          </div>
+          <div id="myTabContent" class="tab-content col-12">
+            <div class="tab-pane fade show active row" id="commentNotice" role="tabpanel" aria-labelledby="noAnswer-tab">
+              <div class="list-group list-group-flush">
+                <h6 class="text-dark my-2" style="display: none">暂无新消息！</h6>
+                <a href="notice/all.html" style="display: none" class="text-info">查看历史消息</a>
+                <!--只显示10条消息-->
+                <div class="list-group-item list-group-item-action" v-for="ne in news.slice(0,10)">
+                  <a v-text="ne.sendname" class="text-info" href="" v-bind:href="'user.html?'+ne.usernameU">张三</a>
+                  <a href="" v-if="ne.content==null&&ne.title==null">关注了你</a>
+                  <a href="" v-if="ne.content==null&&ne.title!=null" v-text="'收藏了你的帖子'+ne.title"></a>
+                  <a href="" v-if="ne.content!=null&&ne.title!=null" v-text="'评论了你的帖子'+ne.title"></a>
+                  <strong href=""  v-text="ne.content">Java中方法重载和重写的区别</strong>
+                </div>
+              </div>
+              <div class="col-12 mt-2 ">
+                <a href="notice/all.html" class="text-info" v-if="total>10">查看全部消息</a>
+              </div>
+            </div>
+            <div class="tab-pane fade row" id="announcement" role="tabpanel" aria-labelledby="unSolve-tab">
+              <p class="text-black mt-2">暂无公告！</p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div><!-- 消息modal-->
+</header>
+
+
+
+<div class="container-fluid bg-light mt-3 mb-1">
+  <div class="row">
+    <div class="col-md-12 col-lg-8 pb-2">
+      <div class="row">
+        <div class="container-fluid" id="questionsApp"
+          th:fragment="questions_app">
+          <h4 class="border-bottom m-2 p-2 font-weight-light"><i class="fa fa-comments-o" aria-hidden="true"></i> 贴吧</h4>
+          <!-- 问题开始  -->
+          <div class="media bg-white m-2 p-3"
+               v-for="question in questions" >
+            <div class="media-body w-50">
+              <div class="row">
+                <div class="col-md-12 col-lg-10">
+                  <h5 class="mt-0 mb-1 text-truncate">
+                    <a class="text-dark"
+                       href="question/detail.html"
+                       v-bind:href="'/question/detail.html?'+question.id"
+                       v-text="question.title">
+                      eclipse 如何导入项目？
+                    </a>
+                  </h5>
+                </div>
+              </div>
+
+              <div class="font-weight-light text-truncate text-wrap text-justify mb-2" style="height: 70px;">
+                <p v-html="question.content">
+                  eclipse 如何导入项目？
+                </p>
+              </div>
+              <div class="row">
+                <div class="col-12 text-right">
+                  <div class="list-inline mb-1 ">
+                    <small class="list-inline-item"
+                           v-text="question.sendname">风继续吹</small>
+                    <a class="btn btn-outline-info btn-md rounded-lg fa fa-pencil " style="font-size: x-small"
+                       href="#writeAnswer"  v-if="!question.friend&&user.username!=question.username" v-on:click.prevent="addFollow(question.username)">关注</a>
+                    <a  class="btn btn-outline-secondary btn-md rounded-lg fa fa-pencil " style="font-size: x-small"
+                        href="#writeAnswer" v-if="question.friend&&user.username!=question.username" v-on:click.prevent="deleteFriend(question.username)">取消关注</a>
+                    <a class="btn btn-outline-info btn-md rounded-lg fa fa-star " style="font-size: x-small"
+                       href="#writeAnswer"  v-if="!question.collection" v-on:click.prevent="addCollect(question.id)">收藏</a>
+                    <a  class="btn btn-outline-secondary btn-md rounded-lg fa fa-star" style="font-size: x-small"
+                        href="#writeAnswer" v-if="question.collection" v-on:click.prevent="deleteCollect(question.id)">移除收藏</a>
+                    <small class=2"list-inline-item"
+                    v-text="question.duration">13分钟前</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- / class="media-body"-->
+            <img src="img/tags/example0.jpg"
+                 alt="" width="200" height="136"
+                 v-bind:src="question.img">
+          </div>
+          <!--  问题结束!!!  -->
+          <div class="row mt-2">
+            <div class="col-6 offset-3">
+              <nav aria-label="Page navigation example">
+                <div class="pagination">
+                  <a class="page-item page-link" href="#"
+                  v-on:click.prevent="loadQuestions(pageInfo.prePage)"
+                  >上一页</a>
+                  <a class="page-item page-link " href="#"
+                  v-for="i in pageInfo.navigatepageNums"
+                  v-on:click.prevent="loadQuestions(i)"
+                  v-bind:class="{'bg-secondary text-light':
+                    i==pageInfo.pageNum}">
+                    <span v-text="i">1</span>
+                  </a>
+                  <a class="page-item page-link" href="#"
+                  v-on:click.prevent="loadQuestions(pageInfo.nextPage)"
+                  >下一页</a>
+                </div>
+              </nav>
+            </div>
+
+          </div>
+        </div>
+
+      </div> <!-- / class="col-8"-->
+    </div>
+    <div class="col-md-12 col-lg-4 pb-2">
+      <!--个人信息-->
+      <div class=""
+              id="userApp">
+        <div class="card">
+          <h5 class="card-header" v-text="table.nickname">陈某</h5>
+          <div class="card-body">
+            <div class="list-inline mb-1 ">
+                <a class="list-inline-item mx-3 my-1 text-center" href="'follow.html?'+table.username"  v-bind:href="'follow.html?'+table.username">
+                  <div><strong v-text="table.follow">10</strong></div>
+                  <div>关注</div>
+                </a>
+                <a class="list-inline-item mx-3 my-1 text-center" href="'fans.html?'+table.username" v-bind:href="'fans.html?'+table.username">
+                  <div><strong v-text="table.fans">10</strong></div>
+                  <div>粉丝</div>
+                </a>
+                <a class="list-inline-item mx-3 my-1 text-center" href="'my.html?'+table.username" v-bind:href="'my.html?'+table.username">
+                  <div><strong v-text="table.post">10</strong></div>
+                  <div>帖子</div>
+                </a>
+                <a class="list-inline-item mx-3 my-1 text-center" href="blank.html">
+                  <div>管理黑名单</div>
+                </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      </div>
+    </div>
+    <!-- / class="col-4"-->
+  </div>
+
+
+<!--底部-->
+<footer class="container-fluid  bg-light mt-1 py-3">
+  <p class="text-center font-weight-light">xm 版权所有<br><a href="http://tedu.cn" rel="nofollow" target="_blank">qq1638854957</a>
+  </p>
+</footer>
+</body>
+<script src="js/utils.js"></script>
+<script src="js/index.js"></script>
+<script src="js/user_info.js"></script>
+<script src="js/userNews.js"></script>
+</html>

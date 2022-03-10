@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>个人资料</title>
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../bower_components/summernote/dist/summernote-bs4.min.css">
+    <link rel="stylesheet" href="../bower_components/select2/dist/css/select2.min.css">
+    <link rel="stylesheet" href="../bower_components/select2-bootstrap4-theme/dist/select2-bootstrap4.min.css">
+    <link rel="stylesheet" href="../bower_components/vue-select/dist/vue-select.css">
+
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../bower_components/popper.js/dist/umd/popper.min.js"></script>
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../bower_components/polyfill/dist/polyfill.min.js"></script>
+    <script src="../bower_components/summernote/dist/summernote-bs4.js"></script>
+    <script src="../bower_components/summernote/dist/lang/summernote-zh-CN.min.js"></script>
+    <script src="../bower_components/vue/dist/vue.js"></script>
+    <script src="../bower_components/select2/dist/js/select2.min.js"></script>
+    <script src="../bower_components/select2/dist/js/i18n/zh-CN.js"></script>
+    <script src="../bower_components/vue-select/dist/vue-select.js"></script>
+</head>
+<body>
+<header class="container-fluid mb-3 bg-light" id="userNewsApp">
+
+    <nav class="navbar navbar-expand-lg   navbar-light bg-light">
+
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link active" href="../index.html">首页</a>
+            </div>
+
+        </div>
+
+        <div class="form-inline my-2 my-lg-0" id="searchApp">
+            <input class="form-control form-control-sm mr-sm-2 rounded-pill" type="search"
+                   placeholder="Search" aria-label="Search">
+            <button class="btn btn-sm btn-outline-secondary my-2 my-sm-0 rounded-pill" type="button"><i
+                    class="fa fa-search" aria-hidden="true"></i></button>
+        </div>
+        <a type="button" class="btn btn-outline-primary btn-sm mx-2" href="../question/create.html">发布帖子</a>
+        <div id="noticeCount">
+            <button type="button" class="btn btn-default btn-xs fa fa-bell-o" data-toggle="modal"
+                    data-target="#noticeModal">
+                <span class="badge badge-warning badge-pill">2</span>
+            </button>
+        </div>
+        <div class="dropdown   py-1 mr-3 ">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                <img style="width: 30px;height: 30px;border-radius: 50%;"
+                     src="../img/user.jpg" v-bind:src="user.img">
+            </button>
+            <div class="dropdown-menu dropdown-menu-sm-left text-sm border-0" aria-labelledby="dropdownMenu2">
+                <a class="dropdown-item " href="user.html">个人资料</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item " href="/logout">注销登录</a>
+            </div>
+        </div>
+    </nav>
+    <!-- 消息modal-->
+    <div class="modal fade" id="noticeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <div id="myTab" role="tablist" class="nav nav-tabs">
+                        <a href="#commentNotice" class="nav-item nav-link active text-black" data-toggle="tab"
+                           aria-controls="commentNotice" aria-selected="true">
+                            通知
+                        </a>
+                        <a href="#announcement" class="nav-item nav-link text-black" data-toggle="tab"
+                           aria-controls="announcement"
+                           aria-selected="true">
+                            公告
+                        </a>
+                    </div>
+                    <div id="myTabContent" class="tab-content col-12">
+                        <div class="tab-pane fade show active row" id="commentNotice" role="tabpanel"
+                             aria-labelledby="noAnswer-tab">
+                            <div class="list-group list-group-flush">
+                                <h6 class="text-dark my-2" style="display: none">暂无新消息！</h6>
+                                <a href="../notice/all.html" style="display: none" class="text-info">查看历史消息</a>
+                                <!--只显示10条消息-->
+                                <div class="list-group-item list-group-item-action">
+                                    <span>张三</span>
+                                    <strong style="display: none">回答了你的问题</strong>
+                                    <strong style="display: none">评论了您的回答</strong>
+                                    <strong style="display: none">评论了您的提问</strong>
+                                    <strong>向您提问</strong>
+                                    <a href="" class="text-info">Java中方法重载和重写的区别</a>
+                                </div>
+                            </div>
+                            <div class="col-12 mt-2 ">
+                                <a href="../notice/all.html" class="text-info">查看全部消息</a>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade row" id="announcement" role="tabpanel" aria-labelledby="unSolve-tab">
+                            <p class="text-black mt-2">暂无公告！</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div><!-- 消息modal-->
+</header>
+<div class="container-fluid mt-5 mb-1" id="userInfoUApp">
+    <div class="row">
+        <div class="col-3">
+            <img src="img/tags/example0.jpg"
+                 alt="" width="208" height="208"
+                 v-bind:src="user.img">
+            <p>
+            <form id="form" method="POST" v-if="table.username==table.now">
+                <input type="file"  name="file" @change="getFile" id="file"/>
+            </form>
+            </p>
+
+
+        </div>
+        <!--个人资料-->
+        <div class="col-5">
+                <div class="form-group">
+                    <label>用户：
+                        <span v-text="user.username"></span>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>昵称：
+                        <span v-text="user.nickname"></span>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>性别：
+                        <span v-text="user.gender"></span>
+                    </label>
+                </div>
+                <div class="form-group mt-2">
+                    <label>生日：
+                        <span v-text="user.birthday"></span>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>自我介绍：</label>
+                    <p v-text="user.autograph"></p>
+                </div>
+        </div><!--个人资料-end--->
+        <div class="col-md-12 col-lg-4 pb-2">
+            <!--个人信息-->
+            <div class="">
+                <div class="card">
+                    <h5 class="card-header" v-text="table.nickname">陈某</h5>
+                    <div class="card-body">
+                        <div class="list-inline mb-1 ">
+                            <a class="list-inline-item mx-3 my-1 text-center" href="follow.html" v-bind:href="'follow.html?'+table.username">
+                                <div><strong v-text="table.follow">10</strong></div>
+                                <div>关注</div>
+                            </a>
+                            <a class="list-inline-item mx-3 my-1 text-center" href="fans.html" v-bind:href="'fans.html?'+table.username">
+                                <div><strong v-text="table.fans">10</strong></div>
+                                <div>粉丝</div>
+                            </a>
+                            <a class="list-inline-item mx-3 my-1 text-center" href="my.html" v-bind:href="'my.html?'+table.username">
+                                <div><strong v-text="table.post">10</strong></div>
+                                <div>帖子</div>
+                            </a>
+                            <a class="list-inline-item mx-3 my-1 text-center" href="blank.html" v-if="table.username==table.now">
+                                <div>管理黑名单</div>
+                            </a>
+                            <a class="list-inline-item mx-3 my-1 text-center" href="" v-if="table.username!=table.now" v-on:click.prevent="addBlank(table.username)">
+                                <div>拉黑Ta</div>
+                            </a>
+                            <a class="list-inline-item mx-3 my-1 text-center" href="userInfo.html" v-if="table.username==table.now">
+                                <span>修改资料</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--底部-->
+<footer class="container-fluid  bg-light mt-1 py-3">
+    <p class="text-center font-weight-light">xm 版权所有<br><a href="http://tedu.cn" rel="nofollow" target="_blank">qq1638854957</a>
+    </p>
+</footer>
+</body>
+<script src="js/utils.js"></script>
+<script src="js/user_info_u.js"></script>
+<script src="js/userNews.js"></script>
+</html>

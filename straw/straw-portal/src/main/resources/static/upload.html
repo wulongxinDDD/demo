@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+</head>
+<body>
+<form method="post" enctype="multipart/form-data"
+      action="/upload/file" id="demoForm">
+    <div>
+        选择要上传的文件:
+        <input type="file" id="imageFile" name="imageFile">
+    </div>
+    <button type="submit">上传</button>
+</form>
+<img id="image">
+</body>
+<script src="js/utils.js"></script>
+<script>
+    //使用JQuery绑定表单提交事件
+    $("#demoForm").submit(function () {
+        //获取用户选中的所有文件(可能有多个文件,所以本质上是一个数组类型)
+        let files = document.getElementById("imageFile").files;
+        //判断是不是真的选中了文件
+        if (files.length > 0) {
+            let file = files[0];
+            console.log(file);
+            //这里开始运行上传图片,但是上传图片代码较多,建议封装一个新的方法
+            uploadImage(file);
+        } else {
+            alert("请选择图片之后再提交!")
+        }
+        return false;//阻止表单提交
+    })
+
+    function uploadImage(file) {
+        //已经确定了要上传的文件就是参数file
+        //使用ajax上传文件的固定写法就是实例化一个form对象,并向其中赋文件参数
+        let form = new FormData();
+        form.append("imageFile", file);
+        $.ajax({
+            url: "/upload/image",
+            method: "post",
+            data: form,
+            //使用ajax执行文件上传时必须设置contentType和processData参数
+            //为false,否则会按照字符串数据处理导致上传失败
+            contentType: false,
+            processData: false,
+            success: function (r) {
+                console.log(r);
+                if (r.code == OK) {
+                    //alert("上传完成");
+                    $("#image").attr("src", r.message);
+                } else {
+                    alert("上传失败");
+                }
+            }
+        })
+    }
+
+
+</script>
+
+
+</html>

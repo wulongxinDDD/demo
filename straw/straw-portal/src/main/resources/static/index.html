@@ -1,0 +1,57 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>主页面</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+<p>&nbsp;</p>
+<table width="500" border="0" align="center">
+    <tr th:if="${user}!=null">
+        <td height="34"><font size="4"><b>
+            <a href="fabu.html">发布信息</a></b></font> &nbsp;
+            &nbsp; &nbsp;
+            <a href="send.html"><b><font size="4"> 分享图片</font></b></a>
+            &nbsp; &nbsp;
+            <a href="product"><b><font size="4"> 查看图片</font></b></a>
+            &nbsp; &nbsp;
+            <a href="esc"><b><font size="4"> 退出系统</font></b></a>
+            &nbsp; &nbsp;
+        </td>
+    </tr>
+    <tr>
+        <td height="32" valign="bottom"><font size="4"><b>留言信息:</b></font></td>
+    </tr>
+
+    <tr>
+        <td>
+            <table width="100%" border="1" bordercolor="#3399CC" cellspacing="1">
+                <tr align="center">
+                    <td width="65">发送人</td>
+                    <td width="95" align="center">发送时间</td>
+                    <td width="65">接收人</td>
+                    <td width="230">信息内容</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr th:each="p:${list}"
+                    th:if="${user.username} eq ${p.sendname} or ${user.username} eq ${p.receivename} or ${p.receivename} eq '所有人'">
+                    <td th:text="${p.sendname}" align="center">周兴池</td>
+                    <td th:text="${p.time}" align="center">2005-01-23</td>
+                    <td th:text="${p.receivename}" align="center">所有人</td>
+                    <td th:text="${p.content}">今晚不加班,一起去Happy!</td>
+                    <td th:if="${user.username} eq ${p.sendname} or ${user.username} eq ${p.receivename}"><a
+                            th:href="'delete?id='+${p.id}"><img src="trash.gif"></img></a></td>
+                </tr>
+            </table>
+
+            <p>&nbsp;</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>&nbsp;</p>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

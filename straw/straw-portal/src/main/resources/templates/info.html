@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>提交资料</title>
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../bower_components/summernote/dist/summernote-bs4.min.css">
+    <link rel="stylesheet" href="../bower_components/select2/dist/css/select2.min.css">
+    <link rel="stylesheet" href="../bower_components/select2-bootstrap4-theme/dist/select2-bootstrap4.min.css">
+    <link rel="stylesheet" href="../bower_components/vue-select/dist/vue-select.css">
+
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../bower_components/popper.js/dist/umd/popper.min.js"></script>
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../bower_components/polyfill/dist/polyfill.min.js"></script>
+    <script src="../bower_components/summernote/dist/summernote-bs4.js"></script>
+    <script src="../bower_components/summernote/dist/lang/summernote-zh-CN.min.js"></script>
+    <script src="../bower_components/vue/dist/vue.js"></script>
+    <script src="../bower_components/select2/dist/js/select2.min.js"></script>
+    <script src="../bower_components/select2/dist/js/i18n/zh-CN.js"></script>
+    <script src="../bower_components/vue-select/dist/vue-select.js"></script>
+</head>
+<body>
+<header class="container-fluid mb-3 bg-light">
+
+</header>
+<div class="container-fluid mt-5 mb-1" id="userApp">
+        <div class="col-5">
+            <form method="post" action=""  v-on:submit.prevent="infoUser">
+                <div class="form-group">
+                    <label>员工编号：</label>
+                    <input class="form-control"  name="id" id="id"  v-model="id">
+                    <label>员工姓名：</label>
+                    <input class="form-control" name="name" id="name"  v-model="name">
+                </div>
+                <label>性别：</label>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="sex" id="inlineRadio1" value="男" v-model="gender">
+                    <label class="form-check-label" for="inlineRadio1">男</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="sex" id="inlineRadio2" value="女" v-model="gender">
+                    <label class="form-check-label" for="inlineRadio2">女</label>
+                </div>
+                <div class="form-group mt-2">
+                    <label for="birthday">生日：</label>
+                    <input type="date" class="form-control" id="birthday" v-model="birthday" >
+                </div>
+                <div class="form-group mt-2">
+                    <a>所属部门</a>
+                    <select id="deptname" v-model="deptname">
+                        <option value ="市场部">市场部</option>
+                        <option value ="开发部">开发部</option>
+                        <option value="商务部">商务部</option>
+                        <option value="行政部">行政部</option>
+                    </select>
+                    <a>岗位</a>
+                    <select id="deptpostname" v-model="deptpostname">
+                        <option value ="市场总监">市场总监</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="selfIntroduction">家庭住址：</label>
+                    <textarea class="form-control" id="selfIntroduction" rows="5" v-model="autograph"></textarea>
+                </div>
+                <button type="submit">提交</button>
+                <button type="reset">重置</button>
+            </form>
+        </div>
+    </div>
+</div>
+<footer class="container-fluid  bg-light mt-1 py-3">
+</footer>
+</body>
+<script src="js/utils.js"></script>
+<script src="js/user_info.js"></script>
+</html>
